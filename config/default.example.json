@@ -1,0 +1,8 @@
+{
+  "gcmKey": "",
+  "subject": "mailto:",
+  "vapid": {
+    "public": "",
+    "private": ""
+  }
+}

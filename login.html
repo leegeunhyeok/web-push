@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>web-push - login</title>
+  </head>
+  <body>
+    <input type="text" onchange="handleChange(this.value)">
+    <p>
+      User ID: <b id="user_id"></b>
+    </p>
+    <button onclick="handleClick()">Go!</button>
+  </body>
+  <script>
+
+    let userId = '';
+
+    function handleChange (value) {
+      document.getElementById('user_id').textContent = value;
+      userId = value;
+    }
+
+    function handleClick () {
+      if (!userId) {
+        alert('userId cannot be empty');
+        return;
+      }
+      localStorage.setItem('userId', userId);
+      location.href = '/index.html';
+    }
+
+  </script>
+</html>
