@@ -10,21 +10,34 @@
     <header>Web Push</header>
     <main>
       <section>
-        <h2>Subscribe</h2>
+        <h2>👀 Status</h2>
+        <div class="item">
+          ServiceWorker registered: <p class="inline" id="registration_status"></p>
+          <br>
+          Push Support: <p class="inline" id="push_support_status"></p>
+          <br>
+          Notification permission: <p class="inline" id="notification_permission_status"></p>
+        </div>
+        <div class="item">
+          <pre id="subscription"></pre>
+        </div>
+      </section>
+      <section>
+        <h2>👉 Subscribe</h2>
         <button onclick="subscribeToPush()">Subscribe</button>
       </section>
       <section>
-        <h2>Send Push Notification</h2>
+        <h2>🚀 Send Push Notification</h2>
         <div class="item">
           <input type="text" id="message" value="Hello, World!">
         </div>
         <div class="group">
-          <input class="fill" type="text" id="target_user_id" placeholder="Target userId">
+          <input class="fill" type="text" id="target_user_id" placeholder="Target User ID">
           <button onclick="sendPushNotification()">Send</button>
         </div>
       </section>
       <section>
-        <h2>Logout</h2>
+        <h2>🔥 Logout</h2>
         <div class="item">
           <button onclick="logout()">Logout</button>
         </div>
