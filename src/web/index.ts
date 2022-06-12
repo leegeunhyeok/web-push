@@ -89,25 +89,29 @@ async function subscribe () {
     return;
   }
 
-  const response = await fetch('/vapid-public-key');
-  const vapidPublicKey = await response.text();
-  console.log('subscribe', { vapidPublicKey });
+  try {
+    const response = await fetch('/vapid-public-key');
+    const vapidPublicKey = await response.text();
+    console.log('subscribe', { vapidPublicKey });
 
-  const registration = store.serviceWorkerRegistration;
+    const registration = store.serviceWorkerRegistration;
 
-  if (!registration) {
-    showAlert('subscribe - service worker is not registered');
-    return;
+    if (!registration) {
+      showAlert('subscribe - service worker is not registered');
+      return;
+    }
+
+    const subscription = await registration.pushManager.subscribe({
+      applicationServerKey: vapidPublicKey,
+      userVisibleOnly: true,
+    });
+    store.pushSubscription = subscription;
+    await postSubscription(subscription);
+  } catch (error) {
+    console.error('subscribe', { error });
+  } finally {
+    updateStatus();
   }
-
-  const subscription = await registration.pushManager.subscribe({
-    applicationServerKey: vapidPublicKey,
-    userVisibleOnly: true,
-  });
-  store.pushSubscription = subscription;
-  await postSubscription(subscription);
-
-  updateStatus();
 }
 
 async function unsubscribe () {
@@ -117,13 +121,17 @@ async function unsubscribe () {
     showAlert('unsubscribe - push subscription not exist');
     return;
   }
-  
-  const unsubscribed = await subscription.unsubscribe();
-  store.pushSubscription = null;
-  console.log('unsubscribe', { unsubscribed });
-  await deleteSubscription();
 
-  updateStatus();
+  try {
+    const unsubscribed = await subscription.unsubscribe();
+    store.pushSubscription = null;
+    console.log('unsubscribe', { unsubscribed });
+    await deleteSubscription();
+  } catch (error) {
+    console.error('unsubscribe', { error });
+  } finally {
+    updateStatus();
+  }
 }
 
 async function sendPushNotification () {
@@ -149,12 +157,11 @@ async function sendPushNotification () {
 }
 
 function setText (element: HTMLElement | null, value: string | boolean) {
-  if (element) {
-    element.textContent = value.toString();
-    element.classList.remove('t');
-    element.classList.remove('f');
-    typeof value === 'boolean' && element.classList.add(value ? 't' : 'f');
-  }
+  if (!element) return;
+  element.textContent = value.toString();
+  element.classList.remove('t');
+  element.classList.remove('f');
+  typeof value === 'boolean' && element.classList.add(value ? 't' : 'f');
 }
 
 async function updateStatus () {
