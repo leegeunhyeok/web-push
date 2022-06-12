@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import express from 'express';
-import webpush, { PushSubscription } from 'web-push';
+import webpush from 'web-push';
 import { logger } from './logger';
 import { responseLogger } from './middlewares';
 import {
@@ -11,13 +11,7 @@ import {
   VAPID_PUBLIC,
   VAPID_PRIVATE,
 } from './constants';
-
-type Store = {
-  data: {
-    userId: string;
-    subscription: PushSubscription;
-  }[];
-};
+import { Store, PushMessage } from './types';
 
 webpush.setGCMAPIKey(GCM_KEY);
 webpush.setVapidDetails(
@@ -85,11 +79,13 @@ app.post('/send-push-notification', (req, res) => {
   const targetUser = store.data.find(({ userId }) => userId === targetUserId);
 
   if (targetUser) {
+    const messageData: PushMessage = {
+      title: 'Web Push | Getting Started',
+      body: message || '(Empty message)',
+    };
+
     webpush
-      .sendNotification(targetUser.subscription, JSON.stringify({
-        title: 'Web Push | Getting Started',
-        body: message || '(Empty message)',
-      }))
+      .sendNotification(targetUser.subscription, JSON.stringify(messageData))
       .then((pushServiceRes) => res.status(pushServiceRes.statusCode).end())
       .catch((error) => {
         logger.error('POST /send-push', { error });
