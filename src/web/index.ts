@@ -5,6 +5,7 @@ type Store = {
 }
 
 type Elements = {
+  currentUserId: HTMLParagraphElement | null;
   notificationPermission: HTMLParagraphElement | null;
   pushSupport: HTMLParagraphElement | null;
   registration: HTMLParagraphElement | null;
@@ -17,6 +18,7 @@ type Elements = {
 const userId = localStorage.getItem('userId');
 const elements: Elements = {
   // Status text
+  currentUserId: null,
   registration: null,
   pushSupport: null,
   notificationPermission: null,
@@ -156,6 +158,7 @@ function setText (element: HTMLElement | null, value: string | boolean) {
 }
 
 async function updateStatus () {
+  setText(elements.currentUserId, userId as string);
   setText(elements.registration, !!store.serviceWorkerRegistration);
   setText(elements.pushSupport, store.pushSupport);
   setText(elements.notificationPermission, Notification.permission);
@@ -173,6 +176,7 @@ function logout () {
 }
 
 window.onload = () => {
+  elements.currentUserId = document.getElementById('current_user_id') as HTMLParagraphElement;
   elements.registration = document.getElementById('registration_status') as HTMLParagraphElement;
   elements.pushSupport = document.getElementById('push_support_status') as HTMLParagraphElement;
   elements.notificationPermission = document.getElementById('notification_permission_status') as HTMLParagraphElement;
