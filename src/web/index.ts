@@ -149,6 +149,8 @@ async function sendPushNotification () {
 function setText (element: HTMLElement | null, value: string | boolean) {
   if (element) {
     element.textContent = value.toString();
+    element.classList.remove('t');
+    element.classList.remove('f');
     typeof value === 'boolean' && element.classList.add(value ? 't' : 'f');
   }
 }
