@@ -4,6 +4,12 @@
 
 ## Setup
 
+- Pre-requirements
+  - >= Node 16
+  - yarn
+    ```bash
+    npm i -g yarn
+    ```
 - create vapid key pairs
   ```bash
   yarn generate-vapid-keys
