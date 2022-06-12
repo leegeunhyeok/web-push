@@ -52,7 +52,7 @@ async function postSubscription (subscription?: PushSubscription) {
   console.log('postSubscription', { subscription });
 
   if (!subscription) {
-    console.warn('postSubscription - subscription cannot be empty');
+    showAlert('postSubscription - subscription cannot be empty');
     return;
   }
 
@@ -81,7 +81,7 @@ async function deleteSubscription () {
 
 async function subscribe () {
   if (store.pushSubscription) {
-    console.warn('subscribe - already subscribed');
+    showAlert('subscribe - already subscribed');
     return;
   }
 
@@ -92,7 +92,7 @@ async function subscribe () {
   const registration = store.serviceWorkerRegistration;
 
   if (!registration) {
-    console.warn('subscribe - service worker is not registered');
+    showAlert('subscribe - service worker is not registered');
     return;
   }
 
@@ -110,7 +110,7 @@ async function unsubscribe () {
   const subscription = store.pushSubscription;
 
   if (!subscription) {
-    console.warn('unsubscribe - push subscription not exist');
+    showAlert('unsubscribe - push subscription not exist');
     return;
   }
   
@@ -127,7 +127,7 @@ async function sendPushNotification () {
   console.log('sendPushNotification', { targetId, message });
 
   if (!targetId) {
-    alert('Target userId cannot be empty');
+    showAlert('Target userId cannot be empty');
     return;
   }
 
@@ -154,6 +154,11 @@ async function updateStatus () {
   setText(elements.pushSupport, store.pushSupport);
   setText(elements.notificationPermission, Notification.permission);
   setText(elements.subscription, JSON.stringify(store.pushSubscription, null, 2));
+}
+
+function showAlert(message: string) {
+  console.warn(message);
+  alert(message);
 }
 
 function logout () {
