@@ -76,6 +76,7 @@ app.delete('/subscription', (req, res) => {
 
 app.post('/send-push-notification', (req, res) => {
   const { targetId: targetUserId, message } = req.body ?? {};
+  logger.info(`Send push notification to '${targetUserId}' with '${message}'`);
   const targetUser = store
     .data
     .reverse()
