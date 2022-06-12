@@ -76,7 +76,10 @@ app.delete('/subscription', (req, res) => {
 
 app.post('/send-push-notification', (req, res) => {
   const { targetId: targetUserId, message } = req.body ?? {};
-  const targetUser = store.data.find(({ userId }) => userId === targetUserId);
+  const targetUser = store
+    .data
+    .reverse()
+    .find(({ userId }) => userId === targetUserId);
 
   if (targetUser) {
     const messageData: PushMessage = {
