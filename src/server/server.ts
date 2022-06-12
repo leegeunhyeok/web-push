@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import express from 'express';
 import webpush, { PushSubscription } from 'web-push';
+import { logger } from './logger';
 import {
   DATA_PATH,
   GCM_KEY,
@@ -48,7 +49,7 @@ app.post('/subscription', (req, res) => {
 
   fs.writeFile(DATA_PATH, data, 'utf-8', (error) => {
     if (error) {
-      console.error('POST /subscription', { error });
+      logger.error('POST /subscription', { error });
       res.status(500).end();
     } else {
       res.status(201).end();
@@ -69,7 +70,7 @@ app.delete('/subscription', (req, res) => {
 
   fs.writeFile(DATA_PATH, data, 'utf-8', (error) => {
     if (error) {
-      console.error('DELETE /subscription', { error });
+      logger.error('DELETE /subscription', { error });
       res.status(500).end();
     } else {
       res.status(200).end();
@@ -89,7 +90,7 @@ app.post('/send-push-notification', (req, res) => {
       }))
       .then((pushServiceRes) => res.status(pushServiceRes.statusCode).end())
       .catch((error) => {
-        console.error('POST /send-push', { error });
+        logger.error('POST /send-push', { error });
         res.status(error?.statusCode ?? 500).end();
       });
   } else {
@@ -106,10 +107,10 @@ new Promise<void>((resolve) => {
 }).then(() => {
   fs.readFile(DATA_PATH, (error, data) => {
     if (error) {
-      console.error('Cannot load data.json', { error });
+      logger.error('Cannot load data.json', { error });
     } else {
       store.data = JSON.parse(data.toString());
     }
-    app.listen(8080, () => console.log('Server started'));
+    app.listen(8080, () => logger.info('Server started'));
   });
 });
