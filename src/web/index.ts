@@ -119,6 +119,7 @@ async function unsubscribe () {
   const unsubscribed = await subscription.unsubscribe();
   store.pushSubscription = null;
   console.log('unsubscribe', { unsubscribed });
+  await deleteSubscription();
 
   updateStatus();
 }
