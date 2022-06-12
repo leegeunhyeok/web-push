@@ -3,6 +3,7 @@ import path from 'path';
 import express from 'express';
 import webpush, { PushSubscription } from 'web-push';
 import { logger } from './logger';
+import { responseLogger } from './middlewares';
 import {
   DATA_PATH,
   GCM_KEY,
@@ -31,6 +32,7 @@ const app = express();
 
 app.use('/', express.static(path.join(__dirname, '../../'))); // project root
 app.use('/', express.static(path.join(__dirname, '../web'))); // project root/dist/web
+app.use(responseLogger)
 app.use(express.json());
 
 app.get('/vapid-public-key', (_req, res) => {
