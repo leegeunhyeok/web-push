@@ -153,7 +153,7 @@ async function sendPushNotification () {
   });
 
   console.log('sendPushNotification', { response });
-  setText(elements.sendStatus, `(${response.status}) ${response.statusText}`);
+  setText(elements.sendStatus, `(${response.status}) ${response.statusText} / ${new Date()}`);
 }
 
 function setText (element: HTMLElement | null, value: string | boolean) {
