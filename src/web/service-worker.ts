@@ -28,16 +28,13 @@ function log (...args: any[]) {
     event.waitUntil(
       self.registration.showNotification(message.title, {
         body: message.body,
-        actions: [
-          { title: 'Open Google', action: 'https://google.com' },
-        ],
       })
     );
   });
   
   self.addEventListener('notificationclick', (event: NotificationEvent) => {
     log('notificationclick', { event });
-    self.clients.openWindow(event.action);
+    self.clients.openWindow('https://github.com/leegeunhyeok/web-push');
   });
 
 })(self as unknown as ServiceWorkerGlobalScope);
