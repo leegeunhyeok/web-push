@@ -1,5 +1,6 @@
-export type {};
-declare const self: ServiceWorkerGlobalScope;
+/// <reference lib="webworker" />
+
+const _self = self as unknown as ServiceWorkerGlobalScope;
 
 type PushMessage = {
   title: string;
@@ -10,16 +11,16 @@ function log (...args: any[]) {
   console.log('service-worker:', ...args);
 }
 
-self.addEventListener('install', (event: ExtendableEvent) => {
+_self.addEventListener('install', (event: ExtendableEvent) => {
   log('install', { event });
 });
 
-self.addEventListener('push', (event: PushEvent) => {
+_self.addEventListener('push', (event: PushEvent) => {
   log('push', { event });
 
   const message = event.data?.json() as PushMessage;
   event.waitUntil(
-    self.registration.showNotification(message.title, {
+    _self.registration.showNotification(message.title, {
       body: message.body,
       actions: [
         { title: 'Open Google', action: 'https://google.com' },
@@ -28,7 +29,7 @@ self.addEventListener('push', (event: PushEvent) => {
   );
 });
 
-self.addEventListener('notificationclick', (event: NotificationEvent) => {
+_self.addEventListener('notificationclick', (event: NotificationEvent) => {
   log('notificationclick', { event });
-  self.clients.openWindow(event.action);
+  _self.clients.openWindow(event.action);
 });

@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    /* Language and Environment */
+    "target": "es2015",                                  /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
+    "lib": ["ES2015", "Dom", "WebWorker"],               /* Specify a set of bundled library declaration files that describe the target runtime environment. */
+    "outDir": "./dist/web"                               /* Specify an output folder for all emitted files. */
+  },
+  "include": ["src/web/index.ts", "src/web/service-worker.ts"]
+}

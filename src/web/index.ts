@@ -1,3 +1,5 @@
+/// <reference lib="dom" />
+
 type Store = {
   pushSupport: boolean;
   serviceWorkerRegistration: ServiceWorkerRegistration | null;

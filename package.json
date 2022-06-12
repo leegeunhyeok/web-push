@@ -2,7 +2,9 @@
   "name": "web-push",
   "version": "1.0.0",
   "scripts": {
-    "build": "tsc",
+    "build:web": "tsc --project tsconfig.web.json",
+    "build:server": "tsc --project tsconfig.server.json",
+    "build": "yarn build:web && yarn build:server",
     "start": "node dist/server/server.js"
   },
   "repository": "https://github.com/leegeunhyeok/web-push.git",
