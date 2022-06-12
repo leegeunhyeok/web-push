@@ -1,12 +1,20 @@
 type Store = {
-  ready: boolean;
   pushSupport: boolean;
-  serviceWorkerRegistration: null | ServiceWorkerRegistration;
+  serviceWorkerRegistration: ServiceWorkerRegistration | null;
+}
+
+type Elements = {
+  message: HTMLInputElement | null;
+  targetUserId: HTMLInputElement | null;
 }
 
 const userId = localStorage.getItem('userId');
+const elements: Elements = {
+  message: null,
+  targetUserId: null,
+};
+
 const store: Store = {
-  ready: false,
   pushSupport: false,
   serviceWorkerRegistration: null,
 };
@@ -53,17 +61,32 @@ async function subscribeToPush () {
 }
 
 async function sendPushNotification () {
-  const targetId = (document.getElementById('target_id') as HTMLInputElement).value;
-  console.log('sendPushNotification', { targetId });
+  const targetId = elements.targetUserId?.value;
+  const message = elements.message?.value ?? '';
+  console.log('sendPushNotification', { targetId, message });
+
+  if (!targetId) {
+    alert('Target userId cannot be empty');
+    return;
+  }
+
   await fetch('/send-push-notification', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ targetId }),
+    body: JSON.stringify({ targetId, message }),
   });
 }
 
-window.onload = () => store.ready = true;
+function logout () {
+  localStorage.removeItem('userId');
+  location.href = '/login.html';
+}
+
+window.onload = () => {
+  elements.message = document.getElementById('message') as HTMLInputElement;
+  elements.targetUserId = document.getElementById('target_user_id') as HTMLInputElement;
+}
 
 registerServiceWorker();

@@ -57,14 +57,14 @@ app.post('/subscription', (req, res) => {
 });
 
 app.post('/send-push-notification', (req, res) => {
-  const { targetId: targetUserId } = req.body ?? {};
+  const { targetId: targetUserId, message } = req.body ?? {};
   const targetUser = store.data.find(({ userId }) => userId === targetUserId);
 
   if (targetUser) {
     webpush
       .sendNotification(targetUser.subscription, JSON.stringify({
-        title: 'Hello, world!',
-        body: new Date().toString(),
+        title: 'Web Push | Getting Started',
+        body: message || '(Empty message)',
       }))
       .then((pushServiceRes) => res.status(pushServiceRes.statusCode).end())
       .catch((error) => {

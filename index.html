@@ -2,13 +2,34 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>web-push</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Web Push</title>
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
   </head>
   <body>
-    <button onclick="subscribeToPush()">Subscribe</button>
-    <hr>
-    Send to: <input type="text" id="target_id">
-    <button onclick="sendPushNotification()">Send</button>
+    <header>Web Push</header>
+    <main>
+      <section>
+        <h2>Subscribe</h2>
+        <button onclick="subscribeToPush()">Subscribe</button>
+      </section>
+      <section>
+        <h2>Send Push Notification</h2>
+        <div class="item">
+          <input type="text" id="message" value="Hello, World!">
+        </div>
+        <div class="group">
+          <input class="fill" type="text" id="target_user_id" placeholder="Target userId">
+          <button onclick="sendPushNotification()">Send</button>
+        </div>
+      </section>
+      <section>
+        <h2>Logout</h2>
+        <div class="item">
+          <button onclick="logout()">Logout</button>
+        </div>
+      </section>
+    </main>
     <script src="/dist/index.js"></script>
   </body>
 </html>

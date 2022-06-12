@@ -2,25 +2,26 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>web-push - login</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Web Push - login</title>
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
   </head>
   <body>
-    <input type="text" onchange="handleChange(this.value)">
-    <p>
-      User ID: <b id="user_id"></b>
-    </p>
-    <button onclick="handleClick()">Go!</button>
+    <header>Web Push</header>
+    <main>
+      <section>
+        <h2>Login</h2>
+        <div class="group">
+          <input class="fill" id="user_id" type="text" placeholder="User ID">
+          <button onclick="handleClick()">Go!</button>
+        </div>
+      </section>
+    </main>
   </body>
   <script>
 
-    let userId = '';
-
-    function handleChange (value) {
-      document.getElementById('user_id').textContent = value;
-      userId = value;
-    }
-
     function handleClick () {
+      const userId = document.getElementById('user_id').value;
       if (!userId) {
         alert('userId cannot be empty');
         return;
