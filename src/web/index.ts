@@ -40,7 +40,7 @@ async function registerServiceWorker () {
 
   let registration = await navigator.serviceWorker.getRegistration();
   if (!registration) {
-    registration = await navigator.serviceWorker.register('/dist/service-worker.js');
+    registration = await navigator.serviceWorker.register('/dist/web/service-worker.js');
   }
 
   store.serviceWorkerRegistration = registration ?? null;

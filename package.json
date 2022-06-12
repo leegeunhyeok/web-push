@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "build": "tsc",
-    "start": "node dist/server.js"
+    "start": "node dist/server/server.js"
   },
   "repository": "https://github.com/leegeunhyeok/web-push.git",
   "author": "leegeunhyeok <dev.ghlee@gmail.com>",

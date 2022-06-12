@@ -28,8 +28,8 @@ const store: Store = { data: [] };
 
 const app = express();
 
-app.use('/', express.static(path.join(__dirname, '../')));
-app.use('/dist', express.static(path.join(__dirname, './')));
+app.use('/', express.static(path.join(__dirname, '../../'))); // project root
+app.use('/dist', express.static(path.join(__dirname, '../'))); // project root/dist
 app.use(express.json());
 
 app.get('/vapid-public-key', (_req, res) => {
