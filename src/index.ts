@@ -9,6 +9,7 @@ type Elements = {
   pushSupport: HTMLParagraphElement | null;
   registration: HTMLParagraphElement | null;
   subscription: HTMLPreElement | null;
+  sendStatus: HTMLParagraphElement | null;
   message: HTMLInputElement | null;
   targetUserId: HTMLInputElement | null;
 }
@@ -20,6 +21,7 @@ const elements: Elements = {
   pushSupport: null,
   notificationPermission: null,
   subscription: null,
+  sendStatus: null,
   // Inputs
   message: null,
   targetUserId: null,
@@ -140,16 +142,17 @@ async function sendPushNotification () {
   });
 
   console.log('sendPushNotification', { response });
+  setText(elements.sendStatus, `(${response.status}) ${response.statusText}`);
+}
+
+function setText (element: HTMLElement | null, value: string | boolean) {
+  if (element) {
+    element.textContent = value.toString();
+    typeof value === 'boolean' && element.classList.add(value ? 't' : 'f');
+  }
 }
 
 async function updateStatus () {
-  const setText = (element: HTMLElement | null, value: string | boolean) => {
-    if (element) {
-      element.textContent = value.toString();
-      typeof value === 'boolean' && element.classList.add(value ? 't' : 'f');
-    }
-  }
-
   setText(elements.registration, !!store.serviceWorkerRegistration);
   setText(elements.pushSupport, store.pushSupport);
   setText(elements.notificationPermission, Notification.permission);
@@ -171,6 +174,7 @@ window.onload = () => {
   elements.pushSupport = document.getElementById('push_support_status') as HTMLParagraphElement;
   elements.notificationPermission = document.getElementById('notification_permission_status') as HTMLParagraphElement;
   elements.subscription = document.getElementById('subscription') as HTMLPreElement;
+  elements.sendStatus = document.getElementById('send_status') as HTMLParagraphElement;
   elements.message = document.getElementById('message') as HTMLInputElement;
   elements.targetUserId = document.getElementById('target_user_id') as HTMLInputElement;
   updateStatus();
