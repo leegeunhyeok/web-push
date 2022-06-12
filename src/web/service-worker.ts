@@ -13,6 +13,11 @@ function log (...args: any[]) {
 
 _self.addEventListener('install', (event: ExtendableEvent) => {
   log('install', { event });
+  event.waitUntil(_self.skipWaiting());
+});
+
+_self.addEventListener('activate', (event: ExtendableEvent) => {
+  log('activate', { event });
 });
 
 _self.addEventListener('push', (event: PushEvent) => {
