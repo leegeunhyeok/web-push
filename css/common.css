@@ -68,6 +68,7 @@ main > section:last-child { border-bottom: none; }
 input {
   width: 100%;
   padding: .5rem;
+  margin: 0;
   border: 1px solid #eee;
   border-radius: 3px;
   background-color: #eee;
@@ -93,6 +94,7 @@ input::-webkit-input-placeholder {
 
 button {
   padding: .5rem 1rem;
+  margin: 0;
   border: 1px solid #000;
   border-radius: 3px;
   background-color: #000;
