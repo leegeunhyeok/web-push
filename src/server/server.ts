@@ -1,8 +1,14 @@
 import fs from 'fs';
 import path from 'path';
-import config from 'config';
 import express from 'express';
 import webpush, { PushSubscription } from 'web-push';
+import {
+  DATA_PATH,
+  GCM_KEY,
+  SUBJECT,
+  VAPID_PUBLIC,
+  VAPID_PRIVATE,
+} from './constants';
 
 type Store = {
   data: {
@@ -10,12 +16,6 @@ type Store = {
     subscription: PushSubscription;
   }[];
 };
-
-const DATA_PATH = 'data.json';
-const GCM_KEY = config.get<string>('gcmKey');
-const SUBJECT = config.get<string>('subject');
-const VAPID_PUBLIC = config.get<string>('vapid.public');
-const VAPID_PRIVATE = config.get<string>('vapid.private');
 
 webpush.setGCMAPIKey(GCM_KEY);
 webpush.setVapidDetails(
