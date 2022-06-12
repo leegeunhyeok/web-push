@@ -48,11 +48,11 @@ async function registerServiceWorker () {
   updateStatus();
 }
 
-async function sendSubscriptionToServer (subscription?: PushSubscription) {
-  console.log('sendSubscriptionToServer', { subscription });
+async function postSubscription (subscription?: PushSubscription) {
+  console.log('postSubscription', { subscription });
 
   if (!subscription) {
-    console.warn('sendSubscriptionToServer - subscription cannot be empty');
+    console.warn('postSubscription - subscription cannot be empty');
     return;
   }
 
@@ -64,27 +64,59 @@ async function sendSubscriptionToServer (subscription?: PushSubscription) {
     body: JSON.stringify({ userId, subscription }),
   });
 
-  console.log('sendSubscriptionToServer', { response });
+  console.log('postSubscription', { response });
 }
 
-async function subscribeToPush () {
+async function deleteSubscription () {
+  const response = await fetch('/subscription', {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ userId }),
+  });
+
+  console.log('deleteSubscription', { response });
+}
+
+async function subscribe () {
+  if (store.pushSubscription) {
+    console.warn('subscribe - already subscribed');
+    return;
+  }
+
   const response = await fetch('/vapid-public-key');
   const vapidPublicKey = await response.text();
-  console.log('subscribeToPush', { vapidPublicKey });
+  console.log('subscribe', { vapidPublicKey });
 
   const registration = store.serviceWorkerRegistration;
 
   if (!registration) {
-    console.warn('subscribeToPush - service worker is not registered');
+    console.warn('subscribe - service worker is not registered');
     return;
   }
 
-  const subscription = await registration?.pushManager.subscribe({
+  const subscription = await registration.pushManager.subscribe({
     applicationServerKey: vapidPublicKey,
     userVisibleOnly: true,
   });
   store.pushSubscription = subscription;
-  await sendSubscriptionToServer(subscription);
+  await postSubscription(subscription);
+
+  updateStatus();
+}
+
+async function unsubscribe () {
+  const subscription = store.pushSubscription;
+
+  if (!subscription) {
+    console.warn('unsubscribe - push subscription not exist');
+    return;
+  }
+  
+  const unsubscribed = await subscription.unsubscribe();
+  store.pushSubscription = null;
+  console.log('unsubscribe', { unsubscribed });
 
   updateStatus();
 }

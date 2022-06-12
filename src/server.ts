@@ -56,6 +56,27 @@ app.post('/subscription', (req, res) => {
   });
 });
 
+app.delete('/subscription', (req, res) => {
+  const { userId } = req.body ?? {};
+
+  // remove target user data
+  const index = store.data.findIndex((data) => data.userId === userId);
+  if (~index) {
+    store.data.splice(index, 1);
+  }
+  
+  const data = JSON.stringify(store.data);
+
+  fs.writeFile(DATA_PATH, data, 'utf-8', (error) => {
+    if (error) {
+      console.error('DELETE /subscription', { error });
+      res.status(500).end();
+    } else {
+      res.status(200).end();
+    }
+  });
+});
+
 app.post('/send-push-notification', (req, res) => {
   const { targetId: targetUserId, message } = req.body ?? {};
   const targetUser = store.data.find(({ userId }) => userId === targetUserId);
@@ -69,7 +90,7 @@ app.post('/send-push-notification', (req, res) => {
       .then((pushServiceRes) => res.status(pushServiceRes.statusCode).end())
       .catch((error) => {
         console.error('POST /send-push', { error });
-        res.status(500).end();
+        res.status(error?.statusCode ?? 500).end();
       });
   } else {
     res.status(404).end();
